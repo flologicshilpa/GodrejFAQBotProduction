@@ -8,7 +8,7 @@ config.database = {
 };
 
 config.container = {
-  "id": "VendorData"
+  "id": "VRMProductionCollection"
 };
 
 config.items = {
