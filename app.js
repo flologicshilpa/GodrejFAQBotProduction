@@ -177,6 +177,7 @@ bot.dialog('FAQ', [
                     .addAttachment({
                         contentType: "application/vnd.microsoft.card.video",
                         content: {
+                            "title":splitArray[2],
                             "autostart": true,
                             "media": [
                                 {
