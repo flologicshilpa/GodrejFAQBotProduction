@@ -102,7 +102,6 @@ bot.dialog('FAQ', [
         session.conversationData.conversationID=jsonParse.address.conversation.id;
 
         session.send("Hello %s! Welcome to FAQ Bot \n\n You can ask me questions on various topics like Vendor Creation, Use of HSN, T-Codes and many more useful topics.",name);
-       // session.send("You can ask me questions on various topics like Vendor Creation, Use of HSN, T-Codes and many more useful topics.");
         let msg = new builder.Message(session)
                     .addAttachment({
                         contentType: "application/vnd.microsoft.card.adaptive",
@@ -142,6 +141,7 @@ bot.dialog('FAQ', [
                         }
                     });
                     session.send(msg);
+                  
         BotID=session.conversationData.botID;
         BotName=session.conversationData.botName;
         UserName=session.conversationData.userName;
@@ -169,6 +169,27 @@ bot.dialog('FAQ', [
                 });
                 if(questionOptions.length ==1)
                 {
+                    if(response.answers[0].answer.indexOf("FAQBOTVIDEOVRM")> -1)
+                    {
+                        var splitArray = [];
+                        splitArray=response.answers[0].answer.split("$");
+                      let msg = new builder.Message(session)
+                    .addAttachment({
+                        contentType: "application/vnd.microsoft.card.video",
+                        content: {
+                            "autostart": true,
+                            "media": [
+                                {
+                                  "url": splitArray[1]
+                                }
+                              ],
+            
+                        }
+                    });
+                    session.send(msg);
+                    }
+                    else
+                    {
                     let msg = new builder.Message(session)
                     .addAttachment({
                         contentType: "application/vnd.microsoft.card.adaptive",
@@ -195,6 +216,7 @@ bot.dialog('FAQ', [
                         }
                     });
                 session.send(msg);
+                }
 
                 BotID=session.conversationData.botID;
                 BotName=session.conversationData.botName;
