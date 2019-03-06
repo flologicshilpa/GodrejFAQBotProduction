@@ -148,7 +148,7 @@ bot.dialog('FAQ', [
         UserId=session.conversationData.userID;
         ConversationId=session.conversationData.conversationID;
                  
-        createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"Conversation Start..");
+       // createFamilyItem(BotID,BotName,ConversationId,UserId,UserName,session.message.text,"Conversation Start..");
          
     }
         else
