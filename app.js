@@ -68,6 +68,14 @@ bot.on("event",function(event) {
     bot.beginDialog(address,'endConversationDialog');   
 })
 
+bot.use({
+    botbuilder: function (session, next) {
+        session.send(); // it doesn't work without this..
+        session.sendTyping();
+        next();
+    }
+});
+
 bot.dialog('endConversationDialog',[
     function (session, args, next) {
         session.conversationData = {};        
