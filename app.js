@@ -7,16 +7,16 @@ const Request = require('request');
 
 //for cosmos db
 var azure = require('botbuilder-azure');
-const CosmosClient = require('@azure/cosmos').CosmosClient;
+// const CosmosClient = require('@azure/cosmos').CosmosClient;
 const config = require('./config');
 const endpoint = config.endpoint;
 const masterKey = config.primaryKey;
-const client = new CosmosClient({ endpoint: endpoint, auth: { masterKey: masterKey } });
+//const client = new CosmosClient({ endpoint: endpoint, auth: { masterKey: masterKey } });
 
 
-var HttpStatusCodes = { NOTFOUND: 404 };
-var databaseId = config.database.id;
-var containerId = config.container.id;
+// var HttpStatusCodes = { NOTFOUND: 404 };
+// var databaseId = config.database.id;
+// var containerId = config.container.id;
 
 var BotID;
 var BotName;
@@ -27,16 +27,16 @@ var UserQuery;
 var UserResponse;
 var ChannelID;
 
-var documentDbOptions = {
-    host: 'https://gplflologiccosmosdbuat.documents.azure.com:443/', 
-    masterKey: 'dmlyKuqhXlLQto7bY8tsZLJpM11Iq3x9FSKfllqZisN55YMrg18FfBJ6jh2u7JXWxAsnm44Um9iTijn4Geq77A==', 
-    database: 'botdocs',   
-    collection: 'VendorData'
-};
+// var documentDbOptions = {
+//     host: 'https://gplflologiccosmosdbuat.documents.azure.com:443/', 
+//     masterKey: 'dmlyKuqhXlLQto7bY8tsZLJpM11Iq3x9FSKfllqZisN55YMrg18FfBJ6jh2u7JXWxAsnm44Um9iTijn4Geq77A==', 
+//     database: 'botdocs',   
+//     collection: 'VendorData'
+// };
 
-var docDbClient = new azure.DocumentDbClient(documentDbOptions);
+// var docDbClient = new azure.DocumentDbClient(documentDbOptions);
 
-var cosmosStorage = new azure.AzureBotStorage({ gzipData: false }, docDbClient);
+// var cosmosStorage = new azure.AzureBotStorage({ gzipData: false }, docDbClient);
 
 
 var server = restify.createServer();
@@ -50,14 +50,16 @@ var connector = new builder.ChatConnector({
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 
+ var inMemoryStorage = new builder.MemoryBotStorage(); 
+
 var bot = new builder.UniversalBot(connector, [
     function (session) {
         session.beginDialog('FAQ');
     }
 ])
-bot.set('storage', cosmosStorage);     
-bot.set('persistUserData', true);
- bot.set('persistConversationData', true);    // new builder.MemoryBotStorage() Register in-memory state storage
+bot.set('storage', inMemoryStorage);     
+// bot.set('persistUserData', true);
+//  bot.set('persistConversationData', true);    // new builder.MemoryBotStorage() Register in-memory state storage
 server.post('/api/messages', connector.listen());
 
 bot.on("event",function(event) {
@@ -345,29 +347,29 @@ bot.dialog('FAQ', [
 })
 
 function createFamilyItem(BotId,BotName,ConversationId,UserId,UserName,UserQuery,UserResponse)  {
-    // var date = new Date();
-     // var currentdate=date.toString("yyyy/MM/dd");
-     // var n = date.getDate();
-      var botname = "FaqBot";
-      var datetime = new Date().getTime();
-     // var currentDate = date.toISOString;
-      var createdid = BotName + "|"+ UserId + "|" + datetime;
-     var channelid="directline";
-      var documentDefinition = {"id":createdid, 
-          "ChannelID":channelid,
-          "BotId":botname,
-          "ConversationId":ConversationId,
-          "UserID": UserId,
-          "UserName": UserName,
-          "UserQuery":UserQuery,
-          "UserResponse":UserResponse,
-          "LoginDate":datetime
-     };
-     try {
-       var { item } =  client.database(databaseId).container(containerId).items.create(documentDefinition);
-             console.log(`Created family item with id:\n${documentDefinition.id}\n`);      
-     }
-     catch (error) {
-       console.log('Somthing getting worng',error);     
-     }
+//     // var date = new Date();
+//      // var currentdate=date.toString("yyyy/MM/dd");
+//      // var n = date.getDate();
+//       var botname = "FaqBot";
+//       var datetime = new Date().getTime();
+//      // var currentDate = date.toISOString;
+//       var createdid = BotName + "|"+ UserId + "|" + datetime;
+//      var channelid="directline";
+//       var documentDefinition = {"id":createdid, 
+//           "ChannelID":channelid,
+//           "BotId":botname,
+//           "ConversationId":ConversationId,
+//           "UserID": UserId,
+//           "UserName": UserName,
+//           "UserQuery":UserQuery,
+//           "UserResponse":UserResponse,
+//           "LoginDate":datetime
+//      };
+//      try {
+//        var { item } =  client.database(databaseId).container(containerId).items.create(documentDefinition);
+//              console.log(`Created family item with id:\n${documentDefinition.id}\n`);      
+//      }
+//      catch (error) {
+//        console.log('Somthing getting worng',error);     
+//      }
     };
